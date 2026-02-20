@@ -54,8 +54,8 @@ export default function Sidebar() {
         })}
       </nav>
 
-      <div className="mt-auto pt-8 border-t border-gray-700 mt-8">
-        <p className="text-xs text-gray-500">Epic 1 + 2: PoC MVP</p>
+      <div className="mt-auto pt-8 border-t border-gray-700">
+        <p className="text-xs text-gray-500">Made with ❤🧠 | Powered by Claude</p>
       </div>
     </aside>
   )
