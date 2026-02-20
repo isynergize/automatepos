@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model PurchaseOrder {
+  id          String   @id @default(cuid())
+  vendor      String
+  items       String   // JSON string of line items
+  total       Float
+  status      String   @default("pending") // pending, ordered, delivered, received
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  activityLogs ActivityLog[]
+}
+
+model ActivityLog {
+  id          String   @id @default(cuid())
+  entityType  String   // "purchase_order", "invoice", etc.
+  entityId    String
+  action      String   // "created", "status_changed", etc.
+  details     String?  // JSON string for additional details
+  timestamp   DateTime @default(now())
+
+  purchaseOrder   PurchaseOrder? @relation(fields: [purchaseOrderId], references: [id])
+  purchaseOrderId String?
+}
+
+model Invoice {
+  id          String   @id @default(cuid())
+  vendor      String
+  lineItems   String   // JSON string of line items
+  total       Float
+  status      String   @default("unprocessed") // unprocessed, processing, processed, failed
+  linkedPOId  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  automationRuns AutomationRun[]
+}
+
+model AutomationRun {
+  id          String   @id @default(cuid())
+  invoiceId   String
+  poId        String?
+  status      String   // success, failed, processing
+  details     String?  // JSON string for error info or extra details
+  startedAt   DateTime @default(now())
+  completedAt DateTime?
+
+  invoice Invoice @relation(fields: [invoiceId], references: [id])
+}
