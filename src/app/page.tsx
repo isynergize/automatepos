@@ -64,7 +64,7 @@ export default function DashboardPage() {
   const fetchStats = useCallback(async () => {
     try {
       const res = await fetch('/api/dashboard/stats')
-      setStats(await res.json())
+      if (res.ok) setStats(await res.json())
     } catch (err) {
       console.error('Failed to fetch stats:', err)
     } finally {
