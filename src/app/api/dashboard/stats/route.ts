@@ -23,23 +23,23 @@ export async function GET() {
 
     // PO stats
     const poByStatus = {
-      pending: purchaseOrders.filter((p) => p.status === 'pending').length,
-      ordered: purchaseOrders.filter((p) => p.status === 'ordered').length,
-      delivered: purchaseOrders.filter((p) => p.status === 'delivered').length,
-      received: purchaseOrders.filter((p) => p.status === 'received').length,
+      pending:   purchaseOrders.filter((p: { status: string }) => p.status === 'pending').length,
+      ordered:   purchaseOrders.filter((p: { status: string }) => p.status === 'ordered').length,
+      delivered: purchaseOrders.filter((p: { status: string }) => p.status === 'delivered').length,
+      received:  purchaseOrders.filter((p: { status: string }) => p.status === 'received').length,
     }
 
     // Invoice stats
     const invoiceByStatus = {
-      unprocessed: invoices.filter((i) => i.status === 'unprocessed').length,
-      processing: invoices.filter((i) => i.status === 'processing').length,
-      processed: invoices.filter((i) => i.status === 'processed').length,
-      failed: invoices.filter((i) => i.status === 'failed').length,
+      unprocessed: invoices.filter((i: { status: string }) => i.status === 'unprocessed').length,
+      processing:  invoices.filter((i: { status: string }) => i.status === 'processing').length,
+      processed:   invoices.filter((i: { status: string }) => i.status === 'processed').length,
+      failed:      invoices.filter((i: { status: string }) => i.status === 'failed').length,
     }
 
     // Automation stats
-    const automationSuccess = automationRuns.filter((r) => r.status === 'success').length
-    const automationFailed = automationRuns.filter((r) => r.status === 'failed').length
+    const automationSuccess = automationRuns.filter((r: { status: string }) => r.status === 'success').length
+    const automationFailed  = automationRuns.filter((r: { status: string }) => r.status === 'failed').length
     const automationSuccessRate =
       automationRuns.length > 0
         ? Math.round((automationSuccess / automationRuns.length) * 100)
